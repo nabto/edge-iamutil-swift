@@ -1,0 +1,13 @@
+Pods
+.DS_Store
+*/NabtoEdgeClient.xcworkspace/xcuserdata
+*/xcuserdata/*
+*/.DS_Store
+NabtoEdgeClient/.idea/*
+NabtoEdgeClient/NabtoEdgeClient.xcodeproj/xcuserdata/**/*
+NabtoEdgeClientHello/NabtoEdgeClientHello.xcodeproj/project.xcworkspace/xcuserdata/**/*
+.idea/*
+NabtoEdgeClient/NabtoEdgeClient.xcodeproj/xcuserdata/*
+*~
+dist
+build-*
