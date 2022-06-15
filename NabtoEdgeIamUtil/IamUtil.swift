@@ -83,6 +83,7 @@ public class IamUtil {
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingLocalInitial` action
      * is not set for the Unpaired role or the device does not support the pairing mode at all)
      * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime.
+     * @throws INITIAL_USER_ALREADY_PAIRED if the initial user was already paired.
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
      */
     static public func pairLocalInitial(connection: Connection) throws {
@@ -120,6 +121,7 @@ public class IamUtil {
      * @throws INITIAL_USER_ALREADY_PAIRED if the initial user was already paired
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingPasswordOpen` action
      * is not set for the Unpaired role or the device does not support the pairing mode at all)
+     * @throws TOO_MANY_WRONG_PASSWORD_ATTEMPTS if the client has attempted to authenticate too many times with a wrong password (try again after 10 seconds)
      * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
      */
@@ -173,6 +175,7 @@ public class IamUtil {
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingPasswordInvite` action
      * is not set for the Unpaired role or the device does not support the pairing mode at all)
      * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime
+     * @throws TOO_MANY_WRONG_PASSWORD_ATTEMPTS if the client has attempted to authenticate too many times with a wrong password (try again after 10 seconds)
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
      */
     static public func pairPasswordInvite(connection: Connection, username: String, password: String) throws {
@@ -683,24 +686,6 @@ public class IamUtil {
         let encoder = CBOREncoder()
         return try? encoder.encode(value)
     }
-}
-
-public enum IamError: Error, Equatable {
-    case OK
-    case INVALID_INPUT
-    case USERNAME_EXISTS
-    case USER_DOES_NOT_EXIST
-    case INITIAL_USER_ALREADY_PAIRED
-    case ROLE_DOES_NOT_EXIST
-    case AUTHENTICATION_ERROR
-    case TOO_MANY_WRONG_PASSWORD_ATTEMPTS
-    case PAIRING_MODE_DISABLED
-    case BLOCKED_BY_DEVICE_CONFIGURATION
-    case INVALID_RESPONSE(error: String)
-    case INVALID_PAIRING_STRING(error: String)
-    case IAM_NOT_SUPPORTED
-    case API_ERROR(cause: NabtoEdgeClientError)
-    case FAILED
 }
 
 public enum PairingMode {
