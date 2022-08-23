@@ -495,8 +495,7 @@ public class IamUtil {
      * Update an IAM user's role on device.
      *
      * Known issue: This function currently assumes the user exists. To be able to interpret the
-     * ROLE_DOES_NOT_EXIST code correctly, this assumption most hold. Later it can gracefully handle
-     * non-existing users
+     * ROLE_DOES_NOT_EXIST code correctly, this assumption must hold.
      *
      * See https://docs.nabto.com/developer/guides/concepts/iam/intro.html for an intro to the concept of roles.
      *
@@ -555,7 +554,7 @@ public class IamUtil {
      * @param connection An established connection to the device
      * @param username Username for the user that should have display name updated
      * @param displayName New display name
-     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device (see note above)
+     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device.
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to update the specified user's display name (the
      * `IAM:SetUserDisplayName` action is not allowed for the requesting role for the `IAM:Username` user)
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
@@ -602,7 +601,7 @@ public class IamUtil {
      * @param connection An established connection to the device
      * @param username Username for the user that should have username updated
      * @param newUsername New username for the user
-     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device (see note above)
+     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device.
      * @throws INVALID_INPUT if username is not valid as per https://docs.nabto.com/developer/api-reference/coap/iam/post-users.html#request
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to update the specified user's display name (the
      * `IAM:SetUserUsername` action is not allowed for the requesting role for the `IAM:Username` user)
@@ -851,5 +850,3 @@ public struct DeviceDetails: Codable {
         }
     }
 }
-
-
