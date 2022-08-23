@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import NabtoEdgeClient
 
 /**
  * IAM Util specific error codes.
