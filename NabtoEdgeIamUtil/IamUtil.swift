@@ -292,6 +292,7 @@ public class IamUtil {
      * Get details about a specific user.
      *
      * @param connection An established connection to the device
+     * @param username Username of the user to get
      *
      * @throws USER_DOES_NOT_EXIST if the user does not exist on the device
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow retrieving this user  (the
@@ -311,6 +312,7 @@ public class IamUtil {
      * details about possible error codes.
      *
      * @param connection An established connection to the device
+     * @param username Username of the user to get
      * @param closure Invoked when the user information is successfully retrieved or retrieval fails.
      */
     static public func getUserAsync(connection: Connection,
@@ -647,6 +649,7 @@ public class IamUtil {
      * Delete the specified user from device.
      *
      * @param connection An established connection to the device
+     * @param username Username of the user to delete
      *
      * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow deleting this user (the
@@ -664,6 +667,7 @@ public class IamUtil {
      * error if an error occurs. See the `deleteUser()` function for details about possible error codes.
      *
      * @param connection An established connection to the device
+     * @param username Username of the user to delete
      * @param closure Invoked when the user is deleted or an error occurs
      */
     static public func deleteUserAsync(connection: Connection, username: String,
