@@ -656,6 +656,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         XCTAssertEqual(details.ProductId, device.productId)
         XCTAssertEqual(details.DeviceId, device.deviceId)
         XCTAssertEqual(details.Modes, ["LocalInitial"])
+        XCTAssertEqual(details.FriendlyName, "I Have a Name!")
     }
 
     func testGetDeviceDetails_Async_Success() throws {
@@ -927,6 +928,4 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
             }
         }
     }
-
-
 }

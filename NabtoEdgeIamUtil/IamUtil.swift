@@ -829,13 +829,19 @@ public struct DeviceDetails: Codable {
      */
     public let DeviceId: String
 
-    internal init(Modes: [String], NabtoVersion: String, AppVersion: String, AppName: String, ProductId: String, DeviceId: String) {
+    /**
+     * The device's friendly name.
+     */
+    public let FriendlyName: String?
+
+    internal init(Modes: [String], NabtoVersion: String, AppVersion: String, AppName: String, ProductId: String, DeviceId: String, friendlyName: String) {
         self.Modes = Modes
         self.NabtoVersion = NabtoVersion
         self.AppVersion = AppVersion
         self.AppName = AppName
         self.ProductId = ProductId
         self.DeviceId = DeviceId
+        self.FriendlyName = friendlyName
     }
 
     /**

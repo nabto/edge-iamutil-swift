@@ -7,7 +7,7 @@
 		<key>HostForTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>8</integer>
 		</dict>
 		<key>IamUtilSmokeTest.xcscheme_^#shared#^_</key>
 		<dict>
@@ -19,14 +19,14 @@
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>6</integer>
 		</dict>
 		<key>IamUtilTests_LocalTestDevices.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>5</integer>
 		</dict>
 		<key>NabtoEdgeIamUtil.xcscheme</key>
 		<dict>
@@ -36,7 +36,28 @@
 		<key>NabtoEdgeIamUtilTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>IamUtilTests_HostedTestDevices.testPasswordOpen_Success_SameConnection.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false />
+			<key>orderHint</key>
 			<integer>4</integer>
+		</dict>
+		<key>NabtoEdgeClientTestBase.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false />
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>IamUtilTests_LocalTestDevices.testGetDeviceDetails.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false />
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 	</dict>
 </dict>

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'NabtoEdgeIamUtil'
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "Nabto 5/Edge IAM Util to Simplify Pairing and User Management"
   s.description  = <<-DESC
 This utility component simplifies user pairing and management through the IAM API on Nabto Edge embedded devices.
