@@ -214,6 +214,7 @@ public class IamUtil {
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow retrieving this list (the
      * `IAM:GetPairing` action is not set for the Unpaired role)
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return list of available pairing modes
      */
     static public func getAvailablePairingModes(connection: Connection) throws -> [PairingMode] {
         return try GetAvailablePairingModes(connection).execute()
@@ -242,6 +243,7 @@ public class IamUtil {
      * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow retrieving this list (the
      * `IAM:GetPairing` action is not set for the Unpaired role)
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return DeviceDetails object with information about the device
      */
     static public func getDeviceDetails(connection: Connection) throws -> DeviceDetails {
         return try GetDeviceDetails(connection).execute()
