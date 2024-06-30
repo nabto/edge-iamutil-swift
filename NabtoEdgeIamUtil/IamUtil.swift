@@ -365,7 +365,6 @@ public class IamUtil {
      * `IAM:CreateUser` action is not allowed for the requesting role)
      * @throws ROLE_DOES_NOT_EXIST the specified role does not exist in the device IAM configuration
      * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
-     * @return an IamUser instance describing the current user
      */
     static public func createUser(connection: Connection,
                                   username: String,
