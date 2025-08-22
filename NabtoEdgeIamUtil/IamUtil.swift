@@ -68,6 +68,15 @@ public class IamUtil {
         }
         PairLocalOpen(connection, cbor: cbor).executeAsync(closure)
     }
+    
+    @available(iOS 13.0, *)
+    static public func pairLocalOpenAsync(
+        connection: Connection,
+        desiredUsername: String
+    ) async throws {
+        let cbor = try IamUser(username: desiredUsername).encode()
+        try await PairLocalOpen(connection, cbor: cbor).executeSwiftAsync()
+    }
 
     /**
      * Perform Local Initial pairing, assigning the default initial username configured on the device (typically "admin").
@@ -103,6 +112,11 @@ public class IamUtil {
         PairLocalInitial(connection).executeAsync(closure)
     }
 
+    @available(iOS 13.0, *)
+    static public func pairLocalInitialAsync(connection: Connection) async throws {
+        try await PairLocalInitial(connection).executeSwiftAsync()
+    }
+    
     /**
      * Perform Password Open pairing, requesting the specified username and authenticating using the specified password.
      *
@@ -159,6 +173,16 @@ public class IamUtil {
                 cbor: cbor).executeAsync(closure)
     }
 
+    @available(iOS 13.0, *)    
+    static public func pairPasswordOpenAsync(
+        connection: Connection,
+        desiredUsername: String,
+        password: String
+    ) async throws {
+        let cbor = try IamUser(username: desiredUsername).encode()
+        try await PairPasswordOpen(connection: connection, password: password, cbor: cbor).executeSwiftAsync()
+    }
+
     /**
      * Perform Password Invite pairing, authenticating with the specified username and password.
      *
@@ -206,6 +230,14 @@ public class IamUtil {
                 password: password).executeAsync(closure)
     }
 
+    @available(iOS 13.0, *)    
+    static public func pairPasswordInviteAsync(connection: Connection, username: String, password: String) async throws {
+        try await PairPasswordInvite(
+                connection: connection,
+                username: username,
+                password: password).executeSwiftAsync()
+    }
+
     /**
      * Retrieve a list of the available pairing modes on the device.
      *
@@ -233,6 +265,11 @@ public class IamUtil {
     static public func getAvailablePairingModesAsync(connection: Connection,
                                                      closure: @escaping AsyncIamResultReceiverWithData<[PairingMode]>) {
         return GetAvailablePairingModes(connection).executeAsyncWithData(closure)
+    }
+
+    @available(iOS 13.0, *)    
+    static public func getAvailablePairingModesAsync(connection: Connection) async throws -> [PairingMode] {
+        return try await GetAvailablePairingModes(connection).executeSwiftAsyncWithData()
     }
 
     /**
@@ -264,6 +301,11 @@ public class IamUtil {
         GetDeviceDetails(connection).executeAsyncWithData(closure)
     }
 
+    @available(iOS 13.0, *)    
+    static public func getDeviceDetailsAsync(connection: Connection) async throws -> DeviceDetails {
+        return try await GetDeviceDetails(connection).executeSwiftAsyncWithData()
+    }
+
     /**
      * Query if the current user is paired or not on a specific device.
      *
@@ -288,6 +330,11 @@ public class IamUtil {
     static public func isCurrentUserPairedAsync(connection: Connection,
                                                 closure: @escaping AsyncIamResultReceiverWithData<Bool>) {
         IsCurrentUserPaired(connection).executeAsyncWithData(closure)
+    }
+    
+    @available(iOS 13.0, *)    
+    static public func isCurrentUserPairedAsync(connection: Connection) async throws -> Bool {
+        return try await IsCurrentUserPaired(connection).executeSwiftAsyncWithData()
     }
 
     /**
@@ -323,6 +370,11 @@ public class IamUtil {
         GetUser(connection, username).executeAsyncWithData(closure)
     }
 
+    @available(iOS 13.0, *)
+    static public func getUserAsync(connection: Connection, username: String) async throws -> IamUser {
+        return try await GetUser(connection, username).executeSwiftAsyncWithData()
+    }
+
     /**
      * Get details about the user that has opened the current connection to the device.
      *
@@ -349,6 +401,11 @@ public class IamUtil {
     static public func getCurrentUserAsync(connection: Connection,
                                            closure: @escaping AsyncIamResultReceiverWithData<IamUser>) {
         GetCurrentUser(connection).executeAsyncWithData(closure)
+    }
+
+    @available(iOS 13.0, *)
+    static public func getCurrentUserAsync(connection: Connection) async throws -> IamUser {
+        return try await GetCurrentUser(connection).executeSwiftAsyncWithData()
     }
 
     /**
@@ -448,6 +505,28 @@ public class IamUtil {
         }
     }
 
+    @available(iOS 13.0, *)
+    static public func createUserAsync(connection: Connection,
+                                       username: String,
+                                       password: String,
+                                       role: String
+    ) async throws {
+        try await CreateUser(connection, IamUser(username: username).encode()).executeSwiftAsync()
+        // if the following fails, a zombie user now exists on device
+        // TODO, document when it can occur (network error or race condition (user renamed before password/role set, quite unlikely))
+        try await UpdateUser(
+                connection: connection,
+                username: username,
+                parameterName: "password",
+                parameterValue: try toCbor(password)).executeSwiftAsync()
+        try await UpdateUser(
+                connection: connection,
+                username: username,
+                parameterName: "role",
+                parameterValue: try toCbor(role),
+                status404ErrorCode: IamError.ROLE_DOES_NOT_EXIST).executeSwiftAsync()
+    }
+
     /**
      * Update an IAM user's password on device.
      *
@@ -492,6 +571,17 @@ public class IamUtil {
             username: username,
             parameterName: "password",
             parameterValue: cbor).executeAsync(closure)
+    }
+
+    @available(iOS 13.0, *)
+    static public func updateUserPassword(connection: Connection,
+                                          username: String,
+                                          password: String) async throws {
+        try await UpdateUser(
+                connection: connection,
+                username: username,
+                parameterName: "password",
+                parameterValue: try toCbor(password)).executeSwiftAsync()
     }
 
     /**
@@ -551,6 +641,19 @@ public class IamUtil {
         ).executeAsync(closure)
     }
 
+    @available(iOS 13.0, *)
+    static public func updateUserRoleAsync(connection: Connection,
+                                      username: String,
+                                      role: String) async throws {
+        try await UpdateUser(
+                connection: connection,
+                username: username,
+                parameterName: "role",
+                parameterValue: try toCbor(role),
+                status404ErrorCode: IamError.ROLE_DOES_NOT_EXIST
+        ).executeSwiftAsync()
+    }
+
     /**
      * Update an IAM user's display name on device.
      *
@@ -597,6 +700,19 @@ public class IamUtil {
             parameterName: "display-name",
             parameterValue: cbor).executeAsync(closure)
     }
+
+    @available(iOS 13.0, *)
+    static public func updateUserDisplayNameAsync(connection: Connection,
+                                                  username: String,
+                                                  displayName: String
+    ) async throws {
+        try await UpdateUser(
+                connection: connection,
+                username: username,
+                parameterName: "display-name",
+                parameterValue: try toCbor(displayName)).executeSwiftAsync()
+    }
+
 
     /**
      * Update an IAM user's username on device.
@@ -646,6 +762,18 @@ public class IamUtil {
             parameterValue: cbor).executeAsync(closure)
     }
 
+    @available(iOS 13.0, *)
+    static public func renameUserAsync(connection: Connection,
+                                       username: String,
+                                       newUsername: String) async throws {
+        try await UpdateUser(
+                connection: connection,
+                username: username,
+                parameterName: "username",
+                parameterValue: toCbor(newUsername)).executeSwiftAsync()
+    }
+
+
     /**
      * Delete the specified user from device.
      *
@@ -674,6 +802,11 @@ public class IamUtil {
     static public func deleteUserAsync(connection: Connection, username: String,
                                        closure: @escaping AsyncIamResultReceiver) {
         DeleteUser(connection, username).executeAsync(closure)
+    }
+
+    @available(iOS 13.0, *)
+    static public func deleteUserAsync(connection: Connection, username: String) async throws {
+        try await DeleteUser(connection, username).executeSwiftAsync()
     }
 
     static private func toCbor(_ value: String) throws -> Data {
