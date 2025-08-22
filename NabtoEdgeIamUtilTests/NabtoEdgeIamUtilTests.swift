@@ -8,6 +8,27 @@ import XCTest
 import NabtoEdgeClient
 @testable import NabtoEdgeIamUtil
 
+func assertThrowsAsyncError<T>(
+    _ expression: @autoclosure () async throws -> T,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    _ errorHandler: (_ error: Error) -> Void = { _ in }
+) async {
+    do {
+        _ = try await expression()
+        // expected error to be thrown, but it was not
+        let customMessage = message()
+        if customMessage.isEmpty {
+            XCTFail("Asynchronous call did not throw an error.", file: file, line: line)
+        } else {
+            XCTFail(customMessage, file: file, line: line)
+        }
+    } catch {
+        errorHandler(error)
+    }
+}
+
 class NabtoEdgeClientTestBase: XCTestCase {
     let testDevices = TestDevices()
     var connection: Connection! = nil
@@ -220,6 +241,30 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         wait(for: [exp], timeout: 2.0)
         XCTAssertNotNil(err)
         XCTAssertEqual(err , IamError.AUTHENTICATION_ERROR)
+    }
+
+    @available(iOS 13.0, *)
+    func testPasswordOpen_SwiftAsync_Success() async throws {
+        let device = self.testDevices.localPairPasswordOpen
+        try super.connect(device)
+        try await IamUtil.pairPasswordOpenAsync(connection: self.connection, desiredUsername: uniqueUser(), password: device.password)
+    }
+
+    @available(iOS 13.0, *)
+    func testPasswordOpen_SwiftAsync_InvalidPassword() async throws {
+        try super.connect(self.testDevices.localPairPasswordOpen)
+        await assertThrowsAsyncError(try await IamUtil.pairPasswordOpenAsync(connection: self.connection, desiredUsername: uniqueUser(), password: "wrong-password")) { error in
+            XCTAssertEqual(error as? IamError, IamError.AUTHENTICATION_ERROR)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    func testPasswordOpen_SwiftAsync_BlockedByDeviceIamConfig() async throws {
+        let device = self.testDevices.localPasswordPairingDisabledConfig
+        try super.connect(device)
+        await assertThrowsAsyncError(try await IamUtil.pairPasswordOpenAsync(connection: self.connection, desiredUsername: uniqueUser(), password: device.password)) { error in
+            XCTAssertEqual(error as? IamError, IamError.BLOCKED_BY_DEVICE_CONFIGURATION)
+        }
     }
 
     func testLocalOpen_Success() throws {

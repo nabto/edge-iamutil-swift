@@ -75,6 +75,38 @@ extension AbstractIamInvocationTemplate {
             self.executeAsyncWithDataImpl(closure)
         }
     }
+    
+    @available(iOS 13.0, *)
+    internal func executeSwiftAsync() async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            self.executeAsync { err in
+                switch err {
+                case .OK:
+                    continuation.resume()
+                default:
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    internal func executeSwiftAsyncWithData() async throws -> T {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.executeAsyncWithData { err, res in
+                switch err {
+                case .OK:
+                    if let res = res {
+                        continuation.resume(returning: res)
+                    } else {
+                        continuation.resume(throwing: IamError.FAILED)
+                    }
+                default:
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
+    }
 
     private func executeAsyncImpl(_ closure: @escaping AsyncIamResultReceiver) {
         do {
