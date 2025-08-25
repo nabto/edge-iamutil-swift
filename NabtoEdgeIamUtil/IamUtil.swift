@@ -69,6 +69,28 @@ public class IamUtil {
         PairLocalOpen(connection, cbor: cbor).executeAsync(closure)
     }
     
+
+
+    /**
+     * Perform Local Open pairing asynchronously, requesting the specified username.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * Local open pairing uses the trusted local network (LAN) pairing mechanism. No password is required for pairing and no
+     * invitation is needed, anybody on the LAN can initiate pairing.
+     *
+     * Read more here: https://docs.nabto.com/developer/guides/concepts/iam/pairing.html#open-local
+     *
+     * @param connection An established connection to the device this client should be paired with
+     * @param desiredUsername Assign this username on the device if available (pairing fails with .USERNAME_EXISTS if not)
+     *
+     * @throws USERNAME_EXISTS if desiredUsername is already in use on the device
+     * @throws INVALID_INPUT if desiredUsername is not valid as per https://docs.nabto.com/developer/api-reference/coap/iam/post-users.html#request
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingLocalOpen` action
+     * is not set for the Unpaired role or the device does not support the pairing mode at all)
+     * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func pairLocalOpenAsync(
         connection: Connection,
@@ -112,6 +134,25 @@ public class IamUtil {
         PairLocalInitial(connection).executeAsync(closure)
     }
 
+    /**
+     * Perform Local Initial pairing asynchronously.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * In this mode, the initial user can be paired on the local network without providing a username or password - and
+     * only the initial user. This is a typical bootstrap scenario to pair the admin user (device owner).
+     *
+     * Read more here: https://docs.nabto.com/developer/guides/concepts/iam/pairing.html#initial-local
+     *
+     * @param connection An established connection to the device this client should be paired with
+     *
+     * @throws INITIAL_USER_ALREADY_PAIRED if the initial user was already paired
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingLocalInitial` action
+     * is not set for the Unpaired role or the device does not support the pairing mode at all)
+     * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime.
+     * @throws INITIAL_USER_ALREADY_PAIRED if the initial user was already paired.
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func pairLocalInitialAsync(connection: Connection) async throws {
         try await PairLocalInitial(connection).executeSwiftAsync()
@@ -173,6 +214,25 @@ public class IamUtil {
                 cbor: cbor).executeAsync(closure)
     }
 
+    /**
+     * Perform Password Open pairing asynchronously.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device this client should be paired with
+     * @param desiredUsername Assign this username on the device if available (pairing fails with .USERNAME_EXISTS if not)
+     * @param password the common (not user-specific) password to allow pairing using Password Open pairing
+     *
+     * @throws USERNAME_EXISTS if desiredUsername is already in use on the device
+     * @throws AUTHENTICATION_ERROR if the open pairing password was invalid for the device
+     * @throws INVALID_INPUT if desiredUsername is not valid as per https://docs.nabto.com/developer/api-reference/coap/iam/post-users.html#request
+     * @throws INITIAL_USER_ALREADY_PAIRED if the initial user was already paired
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingPasswordOpen` action
+     * is not set for the Unpaired role or the device does not support the pairing mode at all)
+     * @throws TOO_MANY_WRONG_PASSWORD_ATTEMPTS if the client has attempted to authenticate too many times with a wrong password (try again after 10 seconds)
+     * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)    
     static public func pairPasswordOpenAsync(
         connection: Connection,
@@ -230,6 +290,22 @@ public class IamUtil {
                 password: password).executeAsync(closure)
     }
 
+    /**
+     * Perform Password Invite pairing asynchronously.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device this client should be paired with
+     * @param username Username for the invited user
+     * @param password Password for the invited user
+     *
+     * @throws AUTHENTICATION_ERROR if authentication failed using the specified username/password combination for the device
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not support local open pairing (the `IAM:PairingPasswordInvite` action
+     * is not set for the Unpaired role or the device does not support the pairing mode at all)
+     * @throws PAIRING_MODE_DISABLED if the pairing mode is configured on the device but is disabled at runtime
+     * @throws TOO_MANY_WRONG_PASSWORD_ATTEMPTS if the client has attempted to authenticate too many times with a wrong password (try again after 10 seconds)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)    
     static public func pairPasswordInviteAsync(connection: Connection, username: String, password: String) async throws {
         try await PairPasswordInvite(
@@ -267,6 +343,18 @@ public class IamUtil {
         return GetAvailablePairingModes(connection).executeAsyncWithData(closure)
     }
 
+    /**
+     * Retrieve a list of the available pairing modes on the device asynchronously.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     *
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow retrieving this list (the
+     * `IAM:GetPairing` action is not set for the Unpaired role)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return list of available pairing modes
+     */
     @available(iOS 13.0, *)    
     static public func getAvailablePairingModesAsync(connection: Connection) async throws -> [PairingMode] {
         return try await GetAvailablePairingModes(connection).executeSwiftAsyncWithData()
@@ -301,6 +389,18 @@ public class IamUtil {
         GetDeviceDetails(connection).executeAsyncWithData(closure)
     }
 
+    /**
+     * Asynchronously retrieve device information that typically does not need a paired user.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     *
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow retrieving this list (the
+     * `IAM:GetPairing` action is not set for the Unpaired role)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return DeviceDetails object with information about the device
+     */
     @available(iOS 13.0, *)    
     static public func getDeviceDetailsAsync(connection: Connection) async throws -> DeviceDetails {
         return try await GetDeviceDetails(connection).executeSwiftAsyncWithData()
@@ -332,6 +432,15 @@ public class IamUtil {
         IsCurrentUserPaired(connection).executeAsyncWithData(closure)
     }
     
+    /**
+     * Asynchronously query if the current user is paired or not on a specific device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return true iff the current user is paired with the device
+     */
     @available(iOS 13.0, *)    
     static public func isCurrentUserPairedAsync(connection: Connection) async throws -> Bool {
         return try await IsCurrentUserPaired(connection).executeSwiftAsyncWithData()
@@ -370,6 +479,20 @@ public class IamUtil {
         GetUser(connection, username).executeAsyncWithData(closure)
     }
 
+    /**
+     * Asynchronously get details about a specific user.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username of the user to get
+     *
+     * @throws USER_DOES_NOT_EXIST if the user does not exist on the device
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow retrieving this user  (the
+     * `IAM:GetUser` action is not set for the requesting role)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return an IamUser instance describing the requested user
+     */
     @available(iOS 13.0, *)
     static public func getUserAsync(connection: Connection, username: String) async throws -> IamUser {
         return try await GetUser(connection, username).executeSwiftAsyncWithData()
@@ -403,6 +526,17 @@ public class IamUtil {
         GetCurrentUser(connection).executeAsyncWithData(closure)
     }
 
+    /**
+     * Asynchronously get details about the user that has opened the current connection to the device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     *
+     * @throws USER_DOES_NOT_EXIST if the current user is not paired with the device.
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     * @return an IamUser instance describing the current user
+     */
     @available(iOS 13.0, *)
     static public func getCurrentUserAsync(connection: Connection) async throws -> IamUser {
         return try await GetCurrentUser(connection).executeSwiftAsyncWithData()
@@ -505,6 +639,21 @@ public class IamUtil {
         }
     }
 
+    /**
+     * Asynchronously create an IAM user on device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username for the new user
+     * @param password Password for the new user
+     * @param role IAM role for the new user
+     * @throws INVALID_INPUT if username is not valid as per https://docs.nabto.com/developer/api-reference/coap/iam/post-users.html#request
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to create a new user (the
+     * `IAM:CreateUser` action is not allowed for the requesting role)
+     * @throws ROLE_DOES_NOT_EXIST the specified role does not exist in the device IAM configuration
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func createUserAsync(connection: Connection,
                                        username: String,
@@ -573,6 +722,18 @@ public class IamUtil {
             parameterValue: cbor).executeAsync(closure)
     }
 
+    /**
+     * Update an IAM user's password on device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username for the user that should have password updated
+     * @param password New password for the user
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to update the specified user's password (the
+     * `IAM:SetUserPassword` action is not allowed for the requesting role for the `IAM:Username` user)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func updateUserPassword(connection: Connection,
                                           username: String,
@@ -641,6 +802,20 @@ public class IamUtil {
         ).executeAsync(closure)
     }
 
+    /**
+     * Asynchronously update an IAM user's role on device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username for the user that should have password updated
+     * @param role New role for the user
+     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device (see note above)
+     * @throws ROLE_DOES_NOT_EXIST the specified role does not exist in the device IAM configuration (see note above)
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to update the specified user's role (the
+     * `IAM:SetUserRole` action is not allowed for the requesting role for the `IAM:Username` user)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func updateUserRoleAsync(connection: Connection,
                                       username: String,
@@ -701,6 +876,20 @@ public class IamUtil {
             parameterValue: cbor).executeAsync(closure)
     }
 
+
+    /**
+     * Asynchronously update an IAM user's display name on device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username for the user that should have display name updated
+     * @param displayName New display name
+     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device.
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to update the specified user's display name (the
+     * `IAM:SetUserDisplayName` action is not allowed for the requesting role for the `IAM:Username` user)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func updateUserDisplayNameAsync(connection: Connection,
                                                   username: String,
@@ -762,6 +951,20 @@ public class IamUtil {
             parameterValue: cbor).executeAsync(closure)
     }
 
+    /**
+     * Asynchronously an IAM user's username on device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username for the user that should have username updated
+     * @param newUsername New username for the user
+     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device.
+     * @throws INVALID_INPUT if username is not valid as per https://docs.nabto.com/developer/api-reference/coap/iam/post-users.html#request
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow the current user to update the specified user's display name (the
+     * `IAM:SetUserUsername` action is not allowed for the requesting role for the `IAM:Username` user)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func renameUserAsync(connection: Connection,
                                        username: String,
@@ -804,6 +1007,19 @@ public class IamUtil {
         DeleteUser(connection, username).executeAsync(closure)
     }
 
+    /**
+     * Asynchronously delete the specified user from device.
+     *
+     * Uses Swift concurrency and is therefore only available on iOS 13 and above.
+     *
+     * @param connection An established connection to the device
+     * @param username Username of the user to delete
+     *
+     * @throws USER_DOES_NOT_EXIST if the specified user does not exist on the device
+     * @throws BLOCKED_BY_DEVICE_CONFIGURATION if the device configuration does not allow deleting this user (the
+     * `IAM:DeleteUser` action for the `IAM:Username` attribute is not allowed for the requesting role)
+     * @throws IAM_NOT_SUPPORTED if Nabto Edge IAM is not supported by the device
+     */
     @available(iOS 13.0, *)
     static public func deleteUserAsync(connection: Connection, username: String) async throws {
         try await DeleteUser(connection, username).executeSwiftAsync()
