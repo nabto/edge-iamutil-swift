@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'NabtoEdgeIamUtil'
-  s.version      = "1.1.0"
+  s.version      = "1.2.0"
   s.summary      = "Nabto 5/Edge IAM Util to Simplify Pairing and User Management"
   s.description  = <<-DESC
 This utility component simplifies user pairing and management through the IAM API on Nabto Edge embedded devices.
@@ -20,9 +20,8 @@ DESC
   s.platform = :ios
   s.ios.preserve_paths = 'NabtoEdgeIamUtil.xcframework'
   s.ios.libraries = 'c++', 'stdc++'
-  s.ios.deployment_target = '10.2'
+  s.ios.deployment_target = '12'
   s.swift_version = '5.0'
-  s.dependency 'NabtoEdgeClientSwift', '~> 3.0.0'
-  s.dependency 'CBORCoding', '~> 1.3.2'
-  s.dependency 'Half', '~> 1.3.1'
+  s.dependency 'NabtoEdgeClientSwift', '~> 3.3.0'
+  s.dependency 'CBORCoding', '~> 1.4.0'
 end

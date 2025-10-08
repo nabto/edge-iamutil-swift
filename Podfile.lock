@@ -1,24 +1,24 @@
 PODS:
-  - CBORCoding (1.3.2):
-    - Half (~> 1.3)
-  - Half (1.3.1)
-  - NabtoEdgeClientSwift (3.0.4)
+  - CBORCoding (1.4.0):
+    - Half (~> 1.4)
+  - Half (1.4.2)
+  - NabtoEdgeClientSwift (3.3.0)
 
 DEPENDENCIES:
-  - CBORCoding
-  - NabtoEdgeClientSwift (= 3.0.4)
+  - CBORCoding (= 1.4.0)
+  - NabtoEdgeClientSwift (= 3.3.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - CBORCoding
     - Half
     - NabtoEdgeClientSwift
 
 SPEC CHECKSUMS:
-  CBORCoding: bc4b677abf83b603535f6af7158b88b86ac07744
-  Half: 53808d877fd489901434883eb5ca91d6be65f0b3
-  NabtoEdgeClientSwift: c75eca7412b6e10020ee4d30c863644875649331
+  CBORCoding: ce4f4dd501db2e7b26697b2eb0f3e6535ca109a1
+  Half: f63c2cbdb8a8d9f5064edcf43057148d75f4b750
+  NabtoEdgeClientSwift: 9c2b54989bf9fd6e9ec42d1d6e621135c06e3d9c
 
-PODFILE CHECKSUM: c0152ac8f9a7addedd54d22374a53d8a038477d1
+PODFILE CHECKSUM: 6de21ff48ed729207e3c3b21db5fa4602164e028
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.16.2
