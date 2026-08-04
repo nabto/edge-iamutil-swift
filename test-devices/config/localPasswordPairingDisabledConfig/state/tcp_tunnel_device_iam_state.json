@@ -1,1 +1,19 @@
-{"Version":1,"OpenPairingPassword":"pff3wUnbs7V7","OpenPairingSct":"3Htitsuxfiib","LocalOpenPairing":false,"PasswordOpenPairing":true,"PasswordInvitePairing":false,"LocalInitialPairing":false,"OpenPairingRole":"Guest","InitialPairingUsername":"admin","FriendlyName":"Tcp Tunnel","Users":[{"Username":"admin","ServerConnectToken":"xhjyAPsctvUC","Password":"YYTXemtmX9xE","Role":"Administrator"}]}
+{
+   "InitialPairingUsername" : "admin",
+   "LocalInitialPairing" : false,
+   "LocalOpenPairing" : false,
+   "OpenPairingPassword" : "pff3wUnbs7V7",
+   "OpenPairingRole" : "Guest",
+   "OpenPairingSct" : "3Htitsuxfiib",
+   "PasswordInvitePairing" : false,
+   "PasswordOpenPairing" : true,
+   "Users" : [
+      {
+         "Password" : "YYTXemtmX9xE",
+         "Role" : "Administrator",
+         "ServerConnectToken" : "xhjyAPsctvUC",
+         "Username" : "admin"
+      }
+   ],
+   "Version" : 1
+}
