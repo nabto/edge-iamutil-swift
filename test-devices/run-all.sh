@@ -24,6 +24,8 @@ run localPasswordPairingDisabledConfig &
 run localPasswordInvite &
 run localAllowAllIam --log-level trace &
 
-${SIMPLE_MDNS_DEVICE_EXE} pr-mdns de-mdns swift-test-subtype swift-txt-key swift-txt-val
+# Keep stdin open so the mDNS device stays discoverable in non-interactive/CI
+# runs; it otherwise stops immediately on stdin EOF ("press enter to stop").
+tail -f /dev/null | ${SIMPLE_MDNS_DEVICE_EXE} pr-mdns de-mdns swift-test-subtype swift-txt-key swift-txt-val &
 
 wait

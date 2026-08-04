@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "edge-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-client-swift",
+      "state" : {
+        "revision" : "d7191668bd7ec813d06cfa681d0f3a46a476a55e",
+        "version" : "4.0.1"
+      }
+    },
+    {
       "identity" : "half",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SomeRandomiOSDev/Half",

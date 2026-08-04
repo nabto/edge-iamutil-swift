@@ -14,7 +14,7 @@ let package = Package(
             targets: ["NabtoEdgeIamUtil"]),
     ],
     dependencies: [
-        .package(path: "../edge-client-swift"),
+        .package(url: "https://github.com/nabto/edge-client-swift", from: "4.0.1"),
         .package(url: "https://github.com/SomeRandomiOSDev/CBORCoding.git", from: "1.0.0")
     ],
     targets: [
