@@ -207,7 +207,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try super.connect(device)
         let exp = XCTestExpectation(description: "pairing done")
         var err: IamError? = nil
-        try IamUtil.pairPasswordOpenAsync(
+        IamUtil.pairPasswordOpenAsync(
                 connection: self.connection,
                 desiredUsername: uniqueUser(),
                 password: device.password) { error in
@@ -224,7 +224,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try super.connect(device)
         let exp = XCTestExpectation(description: "pairing done")
         var err: IamError? = nil
-        try IamUtil.pairPasswordOpenAsync(
+        IamUtil.pairPasswordOpenAsync(
                 connection: self.connection,
                 desiredUsername: "",
                 password: device.password) { error in
@@ -241,7 +241,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try super.connect(device)
         let exp = XCTestExpectation(description: "pairing done")
         var err: IamError? = nil
-        try IamUtil.pairPasswordOpenAsync(
+        IamUtil.pairPasswordOpenAsync(
                 connection: self.connection,
                 desiredUsername: uniqueUser(),
                 password: "wrong-password") { error in
@@ -315,7 +315,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try super.connect(device)
         let exp = XCTestExpectation(description: "pairing done")
         var err: IamError? = nil
-        try IamUtil.pairLocalOpenAsync(
+        IamUtil.pairLocalOpenAsync(
                 connection: self.connection,
                 desiredUsername: uniqueUser()) { error in
             err = error
@@ -331,7 +331,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try super.connect(device)
         let exp = XCTestExpectation(description: "pairing done")
         var err: IamError? = nil
-        try IamUtil.pairLocalOpenAsync(
+        IamUtil.pairLocalOpenAsync(
                 connection: self.connection,
                 desiredUsername: "") { error in
             err = error
@@ -537,7 +537,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         let expCreate = XCTestExpectation(description: "create user invocation done")
 
         var err: IamError? = nil
-        try IamUtil.createUserAsync(
+        IamUtil.createUserAsync(
                 connection: self.connection,
                 username: guest,
                 password: guestPassword,
@@ -633,7 +633,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
 
         let exp = XCTestExpectation(description: "delete done")
         var err: IamError? = nil
-        try IamUtil.deleteUserAsync(connection: self.connection, username: guest) { error in
+        IamUtil.deleteUserAsync(connection: self.connection, username: guest) { error in
             err = error
             exp.fulfill()
         }
@@ -721,7 +721,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         let exp = XCTestExpectation(description: "invocation done")
         var err: IamError? = nil
         var details: DeviceDetails!
-        try IamUtil.getDeviceDetailsAsync(connection: connection) { (error: IamError, result: DeviceDetails?) in
+        IamUtil.getDeviceDetailsAsync(connection: connection) { (error: IamError, result: DeviceDetails?) in
             err = error
             details = result
             exp.fulfill()
@@ -740,7 +740,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         let exp = XCTestExpectation(description: "invocation done")
         var err: IamError? = nil
         var details: DeviceDetails!
-        try IamUtil.getDeviceDetailsAsync(connection: connection) { (error: IamError, result: DeviceDetails?) in
+        IamUtil.getDeviceDetailsAsync(connection: connection) { (error: IamError, result: DeviceDetails?) in
             err = error
             details = result
             exp.fulfill()
@@ -766,7 +766,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         let exp = XCTestExpectation(description: "invocation done")
         var err: IamError? = nil
         var modes: [PairingMode]!
-        try IamUtil.getAvailablePairingModesAsync(connection: connection) { (error: IamError, result: [PairingMode]?) in
+        IamUtil.getAvailablePairingModesAsync(connection: connection) { (error: IamError, result: [PairingMode]?) in
             err = error
             modes = result
             exp.fulfill()
@@ -849,7 +849,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try doTestUpdateUserPassword { connection, username, password in
             let exp = XCTestExpectation(description: "set password done")
             var err: IamError? = nil
-            try IamUtil.updateUserPasswordAsync(connection: connection, username: username, password: password) { error in
+            IamUtil.updateUserPasswordAsync(connection: connection, username: username, password: password) { error in
                 exp.fulfill()
                 err = error
             }
@@ -889,7 +889,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try doTestUpdateUserRole { connection, username, role in
             let exp = XCTestExpectation(description: "update role done")
             var err: IamError? = nil
-            try IamUtil.updateUserRoleAsync(connection: connection, username: username, role: role) { error in
+            IamUtil.updateUserRoleAsync(connection: connection, username: username, role: role) { error in
                 exp.fulfill()
                 err = error
             }
@@ -929,7 +929,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try doTestUpdateUserDisplayName { connection, username, displayName in
             let exp = XCTestExpectation(description: "set password done")
             var err: IamError? = nil
-            try IamUtil.updateUserDisplayNameAsync(connection: connection, username: username, displayName: displayName) { error in
+            IamUtil.updateUserDisplayNameAsync(connection: connection, username: username, displayName: displayName) { error in
                 exp.fulfill()
                 err = error
             }
@@ -973,7 +973,7 @@ class IamUtilTests_LocalTestDevices: NabtoEdgeClientTestBase {
         try doTestRenameUser { connection, username, newUsername in
             let exp = XCTestExpectation(description: "rename done")
             var err: IamError? = nil
-            try IamUtil.renameUserAsync(connection: connection, username: username, newUsername: newUsername) { error in
+            IamUtil.renameUserAsync(connection: connection, username: username, newUsername: newUsername) { error in
                 exp.fulfill()
                 err = error
             }

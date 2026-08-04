@@ -15,7 +15,9 @@ function run {
     ${TCPTUNNEL_EXE} -H ./config/$config --random-ports $opts 2>&1 > /tmp/tunnel-$config
 }
 
-#find ./config -type d -name state -exec git checkout {} \; || true
+# Reset IAM state to the committed baseline so runs are reproducible and don't
+# accumulate paired users (no-op in CI where the checkout already matches HEAD).
+find ./config -type d -name state -exec git checkout {} \; || true
 
 run localPairLocalOpen &
 run localPairLocalInitial &

@@ -4,5 +4,7 @@
 # an ephemeral per-run key is fine and must not be committed.
 config/*/keys/
 
-# Mutating runtime pairing state; regenerated on each run.
-config/*/state/
+# NOTE: config/*/state/ is intentionally NOT ignored. tcp_tunnel_device does
+# not auto-create the IAM state file (unlike the device key) and refuses to
+# start without it, so the baseline state must be committed. run-all.sh resets
+# it to the committed baseline before each run.
