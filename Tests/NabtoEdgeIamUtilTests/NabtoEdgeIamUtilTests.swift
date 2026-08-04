@@ -139,7 +139,17 @@ class IamUtilTests_HostedTestDevices: NabtoEdgeClientTestBase {
         try super.connect(device)
         let username = uniqueUser()
         try IamUtil.pairPasswordOpen(connection: self.connection, desiredUsername: username, password: device.password)
-        XCTAssertThrowsError(try IamUtil.pairPasswordOpen(connection: self.connection, desiredUsername: username, password: device.password)) { error in
+
+        // The device only returns USERNAME_EXISTS (409) when a *different* client tries to
+        // take an already-used username. Re-pairing the same fingerprint returns 201
+        // ("already paired"), so trigger the conflict from a second connection with a new key.
+        let secondConnection = try self.client.createConnection()
+        defer { try? secondConnection.close() }
+        try secondConnection.setPrivateKey(key: try self.client.createPrivateKey())
+        try secondConnection.updateOptions(json: device.asJson())
+        try secondConnection.connect()
+
+        XCTAssertThrowsError(try IamUtil.pairPasswordOpen(connection: secondConnection, desiredUsername: username, password: device.password)) { error in
             XCTAssertEqual(error as? IamError, IamError.USERNAME_EXISTS)
         }
     }
