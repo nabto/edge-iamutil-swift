@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Show toolchain versions
+        run: |
+          swift --version
+          xcodebuild -version
+
+      # The IamUtilTests_LocalTestDevices tests need the devices in test-devices/ to be
+      # discoverable via mDNS, which does not work on GitHub Actions macOS runners - run
+      # those locally instead, see README.md.
+      - name: Build and test (hosted test devices only)
+        run: swift test --skip IamUtilTests_LocalTestDevices

@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "cborcoding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SomeRandomiOSDev/CBORCoding.git",
+      "state" : {
+        "revision" : "6fbd643c64cf6ef7a98391820c372d05fa9ed9ab",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "edge-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-client-swift",
+      "state" : {
+        "revision" : "d7191668bd7ec813d06cfa681d0f3a46a476a55e",
+        "version" : "4.0.1"
+      }
+    },
+    {
+      "identity" : "half",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SomeRandomiOSDev/Half",
+      "state" : {
+        "revision" : "14b1ab35ffdf62c999ef1016ec0f8e745a6feed5",
+        "version" : "1.4.2"
+      }
+    }
+  ],
+  "version" : 2
+}
