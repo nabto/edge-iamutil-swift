@@ -24,18 +24,8 @@ jobs:
           swift --version
           xcodebuild -version
 
-      - name: Start local test devices
-        run: |
-          cd test-devices
-          chmod +x tcp_tunnel_device_macos simple_mdns_device_macos run-all.sh
-          ./run-all.sh > /tmp/run-all.log 2>&1 &
-          sleep 8   # let tcp_tunnel + mdns devices boot and advertise via mDNS
-
-      - name: Build and test
-        run: swift test
-
-      - name: Device logs (on failure)
-        if: failure()
-        run: |
-          cat /tmp/run-all.log || true
-          tail -n +1 /tmp/tunnel-* || true
+      # The IamUtilTests_LocalTestDevices tests need the devices in test-devices/ to be
+      # discoverable via mDNS, which does not work on GitHub Actions macOS runners - run
+      # those locally instead, see README.md.
+      - name: Build and test (hosted test devices only)
+        run: swift test --skip IamUtilTests_LocalTestDevices

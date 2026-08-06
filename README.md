@@ -54,10 +54,24 @@ open Package.swift
 
 ## Running tests
 
-The tests run against Nabto-hosted test devices:
+The `IamUtilTests_HostedTestDevices` tests run against Nabto-hosted test devices and need
+nothing but network access:
 
 ```sh
-swift test
+swift test --skip IamUtilTests_LocalTestDevices
 ```
 
 This is what CI runs (see `.github/workflows/ci.yml`).
+
+The `IamUtilTests_LocalTestDevices` tests need the local test devices in `test-devices/` to
+be running first - they are found through mDNS discovery on the local network:
+
+```sh
+cd test-devices
+./run-all.sh &
+cd ..
+swift test
+```
+
+These tests are excluded from CI as mDNS discovery does not work on the GitHub Actions
+macOS runners.
