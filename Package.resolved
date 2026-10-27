@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nabto/edge-client-swift",
       "state" : {
-        "revision" : "d7191668bd7ec813d06cfa681d0f3a46a476a55e",
-        "version" : "4.0.1"
+        "revision" : "81adfd528eb6db60ebe6f43a479208e32d7741fe",
+        "version" : "4.0.2"
       }
     },
     {
